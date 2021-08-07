@@ -1,0 +1,35 @@
+#app {
+    font-family: 'Montserrat', sans-serif;
+    
+}
+
+.btn-danger{
+    background-color: #EA1C65;
+  }
+
+.badge-danger{
+    background-color:  #EA1C65;
+}
+
+.card-product {
+    border-radius: 15px;
+}
+
+.card-img-top {
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+}
+
+.breadcrumb {
+    background-color:transparent;
+    padding: 0;
+}
+
+.breadcrumb-item.active {
+    font-weight: bold;
+    color: gray;
+}
+
+.img-fluid {
+    border-radius: 15px;
+}
