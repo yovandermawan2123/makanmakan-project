@@ -1,4 +1,4 @@
-# makanmakan
+# Makanmakan
 
 ## TECH INFORMATION
 ```
