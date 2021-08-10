@@ -1,24 +1,9 @@
 # makanmakan
 
-## Project setup
+## TECH INFORMATION
 ```
-yarn install
-```
+1. VueJS
+2. Typicode
+3.Netlify
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
 
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
