@@ -64,10 +64,10 @@ export default {
   },
   mounted() {
      axios
-      .get("http://localhost:3000/keranjang")
+      .get("https://makanmakan-api.000webhostapp.com/api/orders")
       .then((response) =>
         // handle success
-      this.setJumlah(response.data)
+      this.setJumlah(response.data.request)
 )
       .catch((error) =>
         // handle error

@@ -54,10 +54,12 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:3000/best-products")
+      .get("https://makanmakan-api.000webhostapp.com/api/products")
       .then((response) =>
         // handle success
-      this.setProduct(response.data)
+      this.setProduct(response.data.request)
+     
+    
 )
       .catch((error) =>
         // handle error

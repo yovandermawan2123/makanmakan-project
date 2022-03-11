@@ -45,20 +45,21 @@
                   <th>{{index +1}}</th>
                   <td>
                     <img
-                      :src="require ('../assets/images/' + keranjang.products.gambar)"
+                      :src="require ('../assets/images/' + keranjang.product.image)"
                       class="img-fluid shadow"
                       width="200px"
                     />
                   </td>
                   <td>
-                    <strong>{{keranjang.products.nama}}</strong>
+                    <strong>{{keranjang.product.name}}</strong>
                   </td>
-                  <td>{{keranjang.keterangan ? keranjang.keterangan : "-" }}</td>
-                  <td class="text-center">{{keranjang.jumlahPemesanan}}</td>
-                  <td>Rp. {{keranjang.products.harga}}</td>
+                  <td>{{keranjang.description ? keranjang.description : "-" }}</td>
+                  <td class="text-center">{{keranjang.amount}}</td>
+                  <td>Rp. {{keranjang.product.price}}</td>
                   <td>
-                    <strong>Rp. {{keranjang.products.harga * keranjang.jumlahPemesanan}}</strong>
+                    <strong>Rp. {{keranjang.product.price * keranjang.amount}}</strong>
                   </td>
+              
                   <td align="center" class="text-danger" @click="hapusKeranjang(keranjang.id)">
                     <b-icon-trash />
                   </td>
@@ -69,7 +70,8 @@
                     <strong>Total Harga :</strong>
                   </td>
                   <td>
-                    <strong>Rp. {{ totalHarga }}</strong>
+                    
+                    <strong >Rp. {{ totalHarga }}</strong>
                   </td>
                   <td></td>
                 </tr>
@@ -85,12 +87,12 @@
 
             <div class="form-group">
               <label for="nama">Nama</label>
-             <input type="text" class="form-control" v-model="pesanan.nama" />
+             <input type="text" class="form-control" v-model="pesanan.name" />
             </div>
 
                <div class="form-group">
               <label for="noMeja">Nomor Meja</label>
-               <input type="number" class="form-control" v-model="pesanan.noMeja" /> 
+               <input type="number" class="form-control" v-model="pesanan.no_table" /> 
             </div>
 
           
@@ -115,8 +117,10 @@ export default {
   },
   data() {
     return {
+     
       keranjangs: [],
       pesanan: {}
+      
     };
   },
   methods: {
@@ -125,7 +129,7 @@ export default {
     },
     hapusKeranjang(id) {
       axios
-        .delete("http://localhost:3000/keranjang/" + id)
+        .delete("https://makanmakan-api.000webhostapp.com/api/orders" + id)
         .then(() =>
           // handle success
           {
@@ -139,10 +143,10 @@ export default {
 
             //reload halaman
             axios
-              .get("http://localhost:3000/keranjang")
+              .get("https://makanmakan-api.000webhostapp.com/api/orders")
               .then(response =>
                 // handle success
-                this.setKeranjangs(response.data)
+               this.setKeranjangs(response.data.request)
               )
               .catch(error =>
                 // handle error
@@ -156,15 +160,16 @@ export default {
         );
     },
       checkout(){
-   if (this.pesanan.nama && this.pesanan.noMeja) {
+        
+   if (this.pesanan.name && this.pesanan.no_table) {
      this.pesanan.keranjangs = this.keranjangs;
      axios
-     .post("http://localhost:3000/pesanans", this.pesanan)
+     .post("https://makanmakan-api.000webhostapp.com/api/orderdetails", this.pesanan)
       .then(() => {
         //hapus semua keranjang
         this.keranjangs.map(function(item) {
           return axios
-          .delete("http://localhost:3000/keranjang/" + item.id)
+          .delete("https://makanmakan-api.000webhostapp.com/api/orders/" + item.id)
          .catch((error) => console.log(error))
         });
          this.$router.push({ path: '/pesananSukses'})
@@ -192,10 +197,11 @@ export default {
 
   mounted() {
     axios
-      .get("http://localhost:3000/keranjang")
+      .get("https://makanmakan-api.000webhostapp.com/api/orders")
       .then(response =>
         // handle success
-        this.setKeranjangs(response.data)
+      this.setKeranjangs(response.data.request)
+     
       )
       .catch(error =>
         // handle error
@@ -205,7 +211,12 @@ export default {
   computed: {
     totalHarga() {
       return this.keranjangs.reduce(function(items, data) {
-        return items + data.products.harga * data.jumlahPemesanan;
+        return items + data.product.price * data.amount;
+      }, 0);
+    },
+    id_order(){
+     return this.keranjangs.reduce(function(data) {
+        data.id
       }, 0);
     }
   }
