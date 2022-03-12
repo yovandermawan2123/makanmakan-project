@@ -68,6 +68,7 @@ export default {
         .then(response =>
           // handle success
           this.setProduct(response.data)
+        
         )
         .catch(error =>
           // handle error
@@ -78,10 +79,11 @@ export default {
 
   mounted() {
     axios
-      .get("http://localhost:3000/products")
+      .get("https://makanmakan-api.000webhostapp.com/api/products")
       .then(response =>
         // handle success
-        this.setProduct(response.data)
+        this.setProduct(response.data.request),
+        // console.log(response.data)
       )
       .catch(error =>
         // handle error

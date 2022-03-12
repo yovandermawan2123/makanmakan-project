@@ -22,24 +22,24 @@
 
       <div class="row mt-3">
         <div class="col-md-6">
-          <img :src="require('../assets/images/' + product.gambar)" class="img-fluid shadow">
+          <img :src="require('../assets/images/' + product.image)" class="img-fluid shadow">
         </div>
         
         <div class="col-md-6 ">
-          <h2><strong>{{product.nama}}</strong></h2>
+          <h2><strong>{{product.name}}</strong></h2>
             <hr />
-          <h4>Harga: <strong>Rp. {{product.harga}}</strong></h4>
+          <h4>Harga: <strong>Rp. {{product.price}}</strong></h4>
 
           <form class="mt-4"  v-on:submit.prevent>
-
+          
             <div class="form-group">
               <label for="jumlah_pemesanan">Jumlah Pesan</label>
-              <input type="number" class="form-control" v-model="pesanan.jumlahPemesanan" />
+              <input type="number" class="form-control" v-model="pesanan.amount" />
             </div>
 
             <div class="form-group">
               <label for="keterangan">Keterangan</label>
-              <textarea class="form-control" placeholder="Keterangan seperti : pedas, nasi setengah.." v-model="pesanan.keterangan"></textarea>
+              <textarea class="form-control" placeholder="Keterangan seperti : pedas, nasi setengah.." v-model="pesanan.description"></textarea>
             </div>
 
             <button type="submit" class="btn btn-danger" v-on:click="pemesanan"><b-icon-cart /> Pesan</button>
@@ -73,11 +73,13 @@ export default {
    },
    pemesanan(){
     
-  if (this.pesanan.jumlahPemesanan) {
-     this.pesanan.products = this.product;
+  if (this.pesanan.amount) {
+  
+     this.pesanan.id_product = this.$route.params.id;
        axios
-      .post("http://localhost:3000/keranjang", this.pesanan)
-      .then(() => {
+      .post("https://makanmakan-api.000webhostapp.com/api/orders", this.pesanan)
+      .then(response => {
+        console.log(response),
         this.$router.push({ path: '/keranjang'})
       this.$toast.success('Berhasil dimasukan ke keranjang!', {
       type:'success',
@@ -100,10 +102,12 @@ export default {
   },
   mounted() {
    axios
-        .get("http://localhost:3000/products/" + this.$route.params.id)
+        .get("https://makanmakan-api.000webhostapp.com/api/products/" + this.$route.params.id)
         .then(response =>
           // handle success
-          this.setProduct(response.data)
+          this.setProduct(response.data.request[0])
+       
+
         )
         .catch(error =>
           // handle error
